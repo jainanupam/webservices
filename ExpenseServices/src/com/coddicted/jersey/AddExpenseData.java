@@ -85,41 +85,6 @@ public class AddExpenseData {
 		return response;
 	}
 
-	// HTTP GET method
-	@GET
-	// Path: http://localhost/<appln-folder-name>/expenses/addexpense
-	@Path("/addexpense")
-	// Produces JSON as response
-	@Produces(MediaType.APPLICATION_JSON)
-	// Query parameters are parameters: 
-	// http://localhost/<appln-folder-name>/expenses/addexpense?userid=1&amount=20.5
-	// &particulars=xyz&group=1&dated=26-09-2015
-	public String insertExpense(@QueryParam("userid") int id, @QueryParam("amount") float amount,
-			@QueryParam("particulars") String particulars, @QueryParam("group") int isGroup, 
-			@QueryParam("dated") String dated){
-		String response = "";
-		System.out.println("Inside typed method");
-		System.out.println("id: " + id + " amount: " + amount + " particulars: " + particulars 
-				+ " group: " + isGroup + " dated: " + dated);
-		//int retCode = insertExpenseRow(id, amount, particulars, isGroup, dated);
-		int retCode = 0;
-		switch (retCode) {
-		case 0:
-			response = Utility.constructJSON("insertExpense", true);
-			break;
-		case 1:
-			response = Utility.constructJSON("insertExpense", false, 
-					"Error occurred while inserting");
-			break;
-		default:
-			response = Utility.constructJSON("insertExpense", false, 
-					"Unknown status");
-			break;
-		}
-		
-		return response;
-	}
-
 	// HTTP POST method
 	@POST
 	// Path: http://localhost/<appln-folder-name>/expenses/addexpensePost
@@ -158,6 +123,41 @@ public class AddExpenseData {
 
 		return response;
 	}
+	
+//	// HTTP GET method
+//	@GET
+//	// Path: http://localhost/<appln-folder-name>/expenses/addexpense
+//	@Path("/addexpense")
+//	// Produces JSON as response
+//	@Produces(MediaType.APPLICATION_JSON)
+//	// Query parameters are parameters: 
+//	// http://localhost/<appln-folder-name>/expenses/addexpense?userid=1&amount=20.5
+//	// &particulars=xyz&group=1&dated=26-09-2015
+//	public String insertExpense(@QueryParam("userid") int id, @QueryParam("amount") float amount,
+//			@QueryParam("particulars") String particulars, @QueryParam("group") int isGroup, 
+//			@QueryParam("dated") String dated){
+//		String response = "";
+//		System.out.println("Inside typed method");
+//		System.out.println("id: " + id + " amount: " + amount + " particulars: " + particulars 
+//				+ " group: " + isGroup + " dated: " + dated);
+//		int retCode = insertExpenseRow(id, amount, particulars, isGroup, dated);
+//		switch (retCode) {
+//		case 0:
+//			response = Utility.constructJSON("insertExpense", true);
+//			break;
+//		case 1:
+//			response = Utility.constructJSON("insertExpense", false, 
+//					"Error occurred while inserting");
+//			break;
+//		default:
+//			response = Utility.constructJSON("insertExpense", false, 
+//					"Unknown status");
+//			break;
+//		}
+//		
+//		return response;
+//	}
+
 //	private int insertExpenseRow(int id, float amount, String particulars, 
 //			int isGroup, Date dated) {
 //		ExpenseDataRow dataRow = new ExpenseDataRow(id, amount, particulars, isGroup, dated);
