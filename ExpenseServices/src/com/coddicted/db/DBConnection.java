@@ -75,4 +75,49 @@ public class DBConnection {
     	return rowInserted;
     }
 
+    /**
+     * Method to insert user registration data row
+     * 
+     * @param userName
+     * @param password
+     * @return
+     * @throws SQLException
+     */
+    public static boolean registerUser(String userName, String password) throws SQLException{
+    	Boolean rowInserted = false;
+    	Connection dbConn = null;
+    	try {
+			dbConn = DBConnection.createConnection();
+		} catch (SQLException e) {
+			throw e;
+		}
+    	
+    	// SQL query for inserting the data
+    	String sql = "INSERT INTO users(user_name, password, "
+    			+ " user_level, app_user) values(?, ?, ?, ?, ?) ";
+    	
+    	// Prepare the statement
+    	PreparedStatement pStatement = dbConn.prepareStatement(sql);
+    	// set the parameters to complete the SQL statement
+    	pStatement.setString(1, userName);
+    	pStatement.setString(2, password);
+    	pStatement.setString(3, "app");
+    	pStatement.setShort(4, (short) 1);
+    	
+    	try {
+    		int result  = pStatement.executeUpdate();
+    		if(result > 0)
+    			rowInserted = true;
+    	} catch(SQLException e){
+    		System.out.println("SQL Exception while inserting the row");
+    		if(dbConn != null)
+    			dbConn.close();
+    		throw e;
+    	} finally {
+    		if(dbConn != null)
+    			dbConn.close();
+		}
+    	
+    	return rowInserted;
+    }
 }
