@@ -94,7 +94,7 @@ public class DBConnection {
     	
     	// SQL query for inserting the data
     	String sql = "INSERT INTO users(user_name, password, "
-    			+ " user_level, app_user) values(?, ?, ?, ?, ?) ";
+    			+ " user_level, app_user) values(?, ?, ?, ?) ";
     	
     	// Prepare the statement
     	PreparedStatement pStatement = dbConn.prepareStatement(sql);
