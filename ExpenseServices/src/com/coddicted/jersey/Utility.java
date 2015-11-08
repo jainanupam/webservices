@@ -53,4 +53,26 @@ public class Utility {
         }
         return obj.toString();
     }
+    
+	/**
+	 * Method to construct JSON with result object
+	 * 
+	 * @param tag
+	 * @param status
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public static String constructJSON(String tag, boolean status, String key, Object value) {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("tag", tag);
+			obj.put("status", new Boolean(status));
+			obj.put(key, value);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Exception occurring in constructing JSON for result object");
+		}
+		return obj.toString();
+	}
 }

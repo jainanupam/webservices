@@ -3,6 +3,7 @@ package com.coddicted.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.coddicted.dto.ExpenseDataRow;
@@ -120,4 +121,42 @@ public class DBConnection {
     	
     	return rowInserted;
     }
+
+	public static int checkUser(String userName, String password) throws SQLException {
+
+		Connection dbConn = null;
+    	try {
+			dbConn = DBConnection.createConnection();
+		} catch (SQLException e) {
+			throw e;
+		}
+    	
+    	// SQL query for inserting the data
+    	String sql = "select user_id from users where user_name = ? and password = ? ";
+    	
+    	// Prepare the statement
+    	PreparedStatement pStatement = dbConn.prepareStatement(sql);
+    	// set the parameters to complete the SQL statement
+    	pStatement.setString(1, userName);
+    	pStatement.setString(2, password);
+    	
+    	try {
+    		// Get the result set from the SQL statement
+    		ResultSet resultSet  = pStatement.executeQuery();
+    		if(resultSet.getFetchSize() == 0){
+    			return -1;
+    		}
+    	
+    		return resultSet.getInt("user_id");
+    	} catch(SQLException e){
+    		System.out.println("SQL Exception while inserting the row");
+    		if(dbConn != null)
+    			dbConn.close();
+    		throw e;
+    	} finally {
+    		if(dbConn != null)
+    			dbConn.close();
+		}
+		//return -1;
+	}
 }

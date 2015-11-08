@@ -11,15 +11,15 @@ import javax.ws.rs.core.MediaType;
 import com.coddicted.db.DBConnection;
 
 //Path: http://localhost/<appln-folder-name>/register
-@Path("/register")
-public class RegisterUser {
+@Path("/login")
+public class LoginUser {
 	
-	private static final String TAG = "registerUser";
+	private static final String TAG = "loginUser";
 
 	// HTTP POST method
 	@POST
 	// Path: http://localhost/<appln-folder-name>/register/registerUser
-	@Path("/registerUser")
+	@Path("/loginUser")
 	//@Consumes(MediaType.APPLICATION_JSON)
 	// Produces JSON as response
 	@Produces(MediaType.APPLICATION_JSON)
@@ -31,10 +31,16 @@ public class RegisterUser {
 		System.out.println("Password: " + password);
 		
 		int retCode = 2;
+		int userId = -1;
 		try {
-			if(DBConnection.registerUser(userName, password)){
-				System.out.println("inserted row");
+			userId = DBConnection.checkUser(userName, password);
+			password = null;
+			if(userId != -1){
+				System.out.println("Correct credentials");
 				retCode = 0;
+			} else {
+				System.out.println("Incorrect credentials");
+				retCode = -1;
 			}
 		} catch (SQLException e) {
 			System.out.println("SQL Exception caught in insert expense row");
@@ -45,15 +51,18 @@ public class RegisterUser {
 		String response = "";
 		switch (retCode) {
 		case 0:
-			response = Utility.constructJSON(RegisterUser.TAG, true);
+			response = Utility.constructJSON(LoginUser.TAG, true, "user_id", userId);
+			break;
+		case -1:
+			response = Utility.constructJSON(LoginUser.TAG, false, 
+					"User credentials could not be validated");
 			break;
 		case 1:
-			response = Utility.constructJSON(RegisterUser.TAG, false, 
-					"Error occurred while inserting new user data");
+			response = Utility.constructJSON(LoginUser.TAG, false, 
+					"Error occurred while inserting");
 			break;
 		default:
-			response = Utility.constructJSON(RegisterUser.TAG, false, 
-					"Unknown status");
+			response = Utility.constructJSON(LoginUser.TAG, false, "Unknown status");
 			break;
 		}
 		
